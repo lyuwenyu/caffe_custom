@@ -1,2 +1,2 @@
 # caffe_custom
-some custom annotation
+some new layers and custom annotations for source code
