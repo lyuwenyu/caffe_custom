@@ -1,0 +1,22 @@
+layer {
+  name: "data"
+  type: "ImageData"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    mirror: true
+    crop_size: 227
+    mean_file: "mean.binaryproto"
+  }
+  image_data_param {
+    source: "image.txt"
+    batch_size: 100
+    new_height: 227
+    new_width: 227
+    shuffle: true
+    pair_size: 2
+  }
+}
