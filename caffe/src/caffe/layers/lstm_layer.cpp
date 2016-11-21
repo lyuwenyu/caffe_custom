@@ -87,15 +87,15 @@ void LSTMLayer<Dtype>::FillUnrolledNet(NetParameter* net_param) const {
   RecurrentInputShapes(&input_shapes);
   CHECK_EQ(2, input_shapes.size());
 
-  LayerParameter* input_layer_param = net_param->add_layer();
+  LayerParameter* input_layer_param = net_param->add_layer();  //01-input
   input_layer_param->set_type("Input");
   InputParameter* input_param = input_layer_param->mutable_input_param();
 
   input_layer_param->add_top("c_0");
-  input_param->add_shape()->CopyFrom(input_shapes[0]);
+  input_param->add_shape()->CopyFrom(input_shapes[0]);     // input_top0 = c_0
 
-  input_layer_param->add_top("h_0");
-  input_param->add_shape()->CopyFrom(input_shapes[1]);
+  input_layer_param->add_top("h_0");                      
+  input_param->add_shape()->CopyFrom(input_shapes[1]);      // input_top1 = h_0
 
   LayerParameter* cont_slice_param = net_param->add_layer();
   cont_slice_param->CopyFrom(slice_param);
@@ -106,7 +106,7 @@ void LSTMLayer<Dtype>::FillUnrolledNet(NetParameter* net_param) const {
   // Add layer to transform all timesteps of x to the hidden state dimension.
   //     W_xc_x = W_xc * x + b_c
   {
-    LayerParameter* x_transform_param = net_param->add_layer();
+    LayerParameter* x_transform_param = net_param->add_layer();   //02-x transform
     x_transform_param->CopyFrom(biased_hidden_param);
     x_transform_param->set_name("x_transform");
     x_transform_param->add_param()->set_name("W_xc");
@@ -142,7 +142,7 @@ void LSTMLayer<Dtype>::FillUnrolledNet(NetParameter* net_param) const {
     reshape_param->add_top("W_xc_x_static");
   }
 
-  LayerParameter* x_slice_param = net_param->add_layer();
+  LayerParameter* x_slice_param = net_param->add_layer();  //03-slice 
   x_slice_param->CopyFrom(slice_param);
   x_slice_param->add_bottom("W_xc_x");
   x_slice_param->set_name("W_xc_x_slice");
