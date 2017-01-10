@@ -1,0 +1,45 @@
+name : "vanilla-social-lstm"
+
+
+layer {
+	name: "data"
+	top: "data"
+	type: "DummyData"
+	dummy_data_param{
+		shape{ dim: 3 dim: 3 dim: 256 dim: 256}
+	}
+}
+
+layer {
+	name: "flatten"
+	type: "Flatten"
+	bottom: "data"
+	top: "flat"
+	flatten_param{	
+		axis: 1
+	}
+}
+
+layer {
+	name: "reshape"
+	type: "Reshape"
+	bottom: "data"
+	top: "reshape"
+	reshape_param{	
+		shape {
+			dim: 0
+			dim: -1
+		}
+	}
+}
+
+layer {
+	name: "spp"
+	type: "SPP"
+	bottom: "data"
+	top: "sppx"
+	spp_param{
+		pyramid_height: 6
+		pool: MAX
+	}
+}
