@@ -1,0 +1,184 @@
+name : "vanilla-social-lstm"
+
+layer {
+	name: "coordinate"
+	type: "Python"
+	top: "coordinate"
+	top: "target"
+	top: "cont"
+
+#	top: "hidden_data"
+#	top: "cell_data"
+
+	python_param{
+		module: "social_lstm-theano"
+		layer: "data_layer"
+		#share_in_parallel: true
+		param_str: " { 'batch_size': 1, 'seq_length': 8, 'phase': 'train' } "
+	}
+}
+
+
+#layer {
+#	name: "embeded_coordinate"
+#	type: "InnerProduct"
+#	bottom: "coordinate"
+#	top: "embeded_coordinate"
+#	param {
+#		lr_mult: 1
+#		decay_mult: 1
+#	}
+#	param {
+#		lr_mult: 1
+#		decay_mult: 0
+#	}
+#	inner_product_param{
+#		num_output: 64
+#		axis: 2
+#		weight_filler {
+#			type: "xavier"
+#		}
+#		bias_filler {
+#			type: "constant"
+#			value: 0
+#		}
+#	}
+#}
+#
+#layer {
+#	name: "embeded_relu"
+#	type: "ReLU"
+#	bottom: "embeded_coordinate"
+#	top: "embeded_relu"
+#}
+#
+#layer {
+#	name: "reshape"
+#	type: "Reshape"
+#	bottom: "embeded_relu"
+#	top: "reshape_data"
+#	reshape_param {
+#		shape{
+#			dim: 8 #
+#			dim: 1
+#			dim: -1
+#		}
+#	}
+#}
+
+layer {
+	name: "reshape_data"
+	type: "Reshape"
+	bottom: "coordinate"
+	top: "reshape_data"
+	reshape_param {
+		shape {
+			dim: 8
+			dim: 1
+			dim: 2
+		}
+	}
+}
+layer {
+	name: "reshape_cont"
+	type: "Reshape"
+	bottom: "cont"
+	top: "reshape_cont"
+	reshape_param {
+		shape{
+			dim: 8 #
+			dim: 1
+		}
+	}
+}
+
+#layer {
+#	name: "somedata"
+#	type: "DummyData"
+#	top: "hidden_data"
+#	dummy_data_param{
+#		shape{
+#			dim: 1
+#			dim: 1
+#			dim: 128
+#		}
+#	}
+#}
+#layer {
+#	name: "somedata"
+#	type: "DummyData"
+#	top: "cell_data"
+#	dummy_data_param{
+#		shape{
+#			dim: 1
+#			dim: 1
+#			dim: 128
+#		}
+#	}
+#}
+
+layer {
+	name: "lstm"
+	type: "LSTM"
+	bottom: "reshape_data"
+	bottom: "reshape_cont"
+	#bottom: "hidden_data"
+	#bottom: "cell_data"
+	top: "lstm"
+	#top: "hidden_state"
+	#top: "cell_state"
+	recurrent_param {
+		#expose_hidden: true
+		num_output: 128
+		weight_filler {
+			type: "uniform"
+			min: -0.08
+			max: 0.08
+		}
+		bias_filler {
+			type: "constant"
+			value: 0.01
+		}
+	}
+}
+
+layer {
+	name: "predicted"
+	type: "InnerProduct"
+	bottom: "lstm"
+	top: "predicted"
+	param {
+		lr_mult: 1
+		decay_mult: 1
+	}
+	param {
+		lr_mult: 1
+		decay_mult: 0
+	}	
+	inner_product_param{
+		num_output: 5
+		weight_filler{
+			type: "gaussian"
+			std: 0.01
+		}
+		bias_filler{
+			type: "constant"
+			value: 0.01
+		}
+	}
+}
+
+
+layer {
+	name: "loss"
+	type: "Python"
+	bottom: "predicted"
+	bottom: "target"
+	top: "loss"
+	loss_weight: 1
+	python_param {
+		module: "social_lstm-theano"
+		layer: "loss_layer"
+		#param_str: " { 'phase': 1} "  # 1-train # 0-test
+	}
+}
