@@ -1,0 +1,89 @@
+name: "traintest"
+force_backward: true
+
+layer {
+	name: "hd5"
+	top: "data"
+	top: "label"
+
+	type: "HDF5Data"
+	hdf5_data_param {
+		source: "D:\\workspace\\python\\lstm-test\\lstm-train.h5list"
+		batch_size: 2
+		#shuffle: true
+	}
+}
+
+
+
+
+layer {
+	name: "res"
+	type: "Reshape"
+	bottom: "data"
+	top: "datax"
+	reshape_param {
+		shape {
+			dim: -1
+			dim: 2
+			dim: 2
+			dim: 2
+		}
+	}
+}
+
+layer {
+	name: "resx"
+	type: "Reshape"
+	bottom: "label"
+	top: "labelx"
+	reshape_param {
+		shape {
+			dim: -1
+			dim: 2
+		}
+	}
+}
+
+
+
+layer {
+	name: "lstm1"
+	type: "LSTM"
+	bottom: "datax"
+	bottom: "labelx"
+	top: "lstm1"
+	recurrent_param {
+		num_output: 5
+		weight_filler {
+			type: "uniform"
+			min: -0.8
+			max: 0.8
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
+	}
+}
+
+
+layer {
+	name: "lstm2"
+	type: "LSTM"
+	bottom: "lstm1"
+	bottom: "labelx"
+	top: "lstm2"
+	recurrent_param {
+		num_output: 10
+		weight_filler {
+			type: "uniform"
+			min: -0.8
+			max: 0.8
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
+	}
+}
