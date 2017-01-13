@@ -1,0 +1,17 @@
+net: "train_val.prototxt"
+
+
+base_lr: 0.1
+weight_decay: 0.0005
+momentum: 0.9
+lr_policy: "step"
+stepsize: 15000
+gamma: 0.1
+
+
+display: 5
+max_iter: 100000
+snapshot: 5000
+snapshot_prefix: "rcreid"
+
+solver_mode: CPU

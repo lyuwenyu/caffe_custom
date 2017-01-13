@@ -1,0 +1,75 @@
+force_backward: true
+
+layer {
+	name: "data"
+	type: "DummyData"
+	top: "data"
+	top: "rois"
+	top: "label"
+	dummy_data_param{
+		shape {dim: 1 dim: 3 dim: 32 dim: 32}
+		shape {dim: 5 dim: 4}
+		shape {dim: 5 dim: 1}
+	}
+}
+
+layer {
+	name: "conv1"
+	type: "Convolution"
+	bottom: "data"
+	top: "conv1"
+	param {
+		lr_mult: 1
+		decay_mult: 1
+	}
+	param {
+		lr_mult: 2
+		decay_mult: 0
+	}
+	convolution_param {
+		num_output: 5
+		kernel_size: 5
+		stride: 3
+		weight_filler {
+			type: "gaussian"
+			std: 0.01
+		}
+		bias_filler {
+			type: "constant"
+			value: 0
+		}
+	}
+}
+
+layer {
+	name: "roi_warp"
+	bottom: "conv1"
+	bottom: "rois"
+	top: "roi_warp"
+	type: "Python"
+	python_param {
+		module: "roi_warp_layer"
+		layer: "roi_warp_layer"
+		param_str: " {'out_size': 9} "
+	}
+}
+
+layer {
+	name: "pool1"
+	type: "Pooling"
+	bottom: "roi_warp"
+	top: "pool1"
+	pooling_param {
+		pool: MAX
+		global_pooling: true
+	}
+}
+
+
+layer {
+	name: "loss"
+	type: "SoftmaxWithLoss"
+	bottom: "pool1"
+	bottom: "label"
+	top: "loss"
+}
