@@ -52,8 +52,8 @@ class roi_warp_layer(caffe.Layer):
 		#feature_map = bottom[0].data
 		#rois = bottom[1].data
 
-		bottom[0].diff = 0
-		bottom[1].diff = 0
+		bottom[0].diff = 0.0
+		bottom[1].diff = 0.0
 
 		for i in range(top[0].diff.shape[0]):
 			
@@ -99,11 +99,10 @@ class roi_warp_layer(caffe.Layer):
 
 		delta_index = np.vstack([delta_h.flatten(), delta_w.flatten()]).transpose()
 
-		coor_fea = np.vstack(h.flatten(), w.flatten()).transpose().astype(np.float32)
-		coor_out = np.vstack(ho.flatten(), wo.flatten()).transpose().astype(np.float32)
+		coor_fea = np.vstack(h.flatten(), w.flatten()).transpose().astype(np.int32)
+		coor_out = np.vstack(ho.flatten(), wo.flatten()).transpose().astype(np.int32)
 
 		return coor_out, coor_fea, delta_index
-
 
 #out = np.zeros([224,224,3], dtype=np.float32)
 #for c in range(3):
