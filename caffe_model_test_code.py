@@ -10,9 +10,9 @@ def _crops(img, size):
 
 def image_preprocess(img):
     #img = io.imread(img_path)
-    #img = transform.resize(img, [224,224])*255.0
-    img = transform.rescale(img, 0.3)*255.0
-    img = _crops(img, [224,224])[4]
+    img = transform.resize(img, [224,224])*255.0
+    #img = transform.rescale(img, 0.3)*255.0
+    #img = _crops(img, [224,224])[4]
     img = img - [104.0, 117.0, 123.0]
     img = img[:,:,[2,1,0]]
     img = np.transpose(img, [2, 0, 1])
