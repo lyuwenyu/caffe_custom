@@ -22,7 +22,7 @@ class data_layer(caffe.Layer):
 
 			hc, wc = int(img.shape[0]/2), int(img.shape[1]/2)
 			try:
-				shift = np.random.choice([-30, -15, 0, 15, 30], size=2, p=[0.2, 0.2, 0.2, 0.2, 0.2])
+				shift = np.random.choice([-30, -15, 0, 15, 30], size=2, p=[0.2]*5)
 				hcn , wcn= hc+shift[0], wc+shift[1]
 				img = img[hcn-112: hcn+112, wcn-112: wcn+112, :] #self._crop_size
 			except:
