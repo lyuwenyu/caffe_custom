@@ -16,7 +16,8 @@ class data_layer(caffe.Layer):
 	def _image_preprocess(self, img):
 
 		img = transform.rescale(img, 0.3)*255.0
-		img = img - [104.0, 117.0, 123.0]
+		#img = img - [104.0, 117.0, 123.0]
+		img = img - [123.0, 117.0, 104.0]
 
 		if self.random_crop:
 
