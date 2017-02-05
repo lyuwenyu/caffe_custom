@@ -1,0 +1,22 @@
+net: "ResNet-101-train.prototxt"
+
+test_net: "ResNet-101-test.prototxt"
+test_iter: 10
+test_interval: 20
+test_initialization: true
+
+display: 10
+average_loss: 10
+
+base_lr: 0.001
+lr_policy: "step"
+gamma: 0.1
+stepsize: 1500   # TODO
+max_iter: 6000  # TODO
+momentum: 0.96
+weight_decay: 0.0005
+
+snapshot: 500
+snapshot_prefix: "outputsx/resnet_101_outsiderear_withtest" #TODO
+
+solver_mode: GPU
