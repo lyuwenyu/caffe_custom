@@ -29,19 +29,30 @@ class data_layer(caffe.Layer):
 			#except:
 			#	img = img[hc-112: hc+112, wc-112: wc+112, :]
 			#hc, wc = int(img.shape[0]/2), int(img.shape[1]/2)
-			try:
-				hc, wc = int(img.shape[0]/2), int(img.shape[1]/2)
-				shift = np.random.choice([-30, -15, 0, 15, 30], size=2, p=[0.2]*5)
-				hcn , wcn= hc+shift[0], wc+shift[1]
-				if hcn-112>0 and wcn-112>0 and (hcn+112)<img.shape[0] and (wcn+112)<img.shape[1]:
-					img = img[hcn-112: hcn+112, wcn-112: wcn+112, :] #self._crop_size
-				else:
-					img = img[hc-112: hc+112, wc-112: wc+112, :]
-			except:
+			
+			#try:
+			#	hc, wc = int(img.shape[0]/2), int(img.shape[1]/2)
+			#	shift = np.random.choice([-30, -15, 0, 15, 30], size=2, p=[0.2]*5)
+			#	hcn , wcn= hc+shift[0], wc+shift[1]
+			#	if hcn-112>0 and wcn-112>0 and (hcn+112)<img.shape[0] and (wcn+112)<img.shape[1]:
+			#		img = img[hcn-112: hcn+112, wcn-112: wcn+112, :] #self._crop_size
+			#	else:
+			#		img = img[hc-112: hc+112, wc-112: wc+112, :]
+			#except:
 
+			#	hc, wc = int(img.shape[0]/2), int(img.shape[1]/2)
+			#	img = img[hc-112: hc+112, wc-112: wc+112, :]				
+			
+			
+			h_off = max(0, random.randint(0, img.shape[0] - self.random_crop))
+			w_off = max(0, random.randint(0, img.shape[1] - self.random_crop))
+			
+			if h_off+self.random_crop< img.shape[0] and w_off+self.random_crop< img.shape[1]:
+				img = img[h_off: h_off+self.random_crop, w_off: w_off+self.random_crop, :]
+			else:
 				hc, wc = int(img.shape[0]/2), int(img.shape[1]/2)
-				img = img[hc-112: hc+112, wc-112: wc+112, :]				
-				
+				img = img[hc-112: hc+112, wc-112: wc+112, :]
+			
 
 		if self.mirror and random.random()<0.5:
 			img = img[:, ::-1, :]
