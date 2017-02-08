@@ -121,6 +121,15 @@ class data_layer(caffe.Layer):
 			fetcher_process = Fetcher(self.queue, self._lines, self.layer_params)
 			fetcher_process.start()
 
+
+		def clean_up():
+			print 'terminatring process'
+			for iterm in self.fetcher_processes:
+				iterm.terminate()
+				iterm.join()
+		import atexit
+		atexit.register(clean_up)
+		
 #	def _process_run(self):
 #
 #		while True:
