@@ -117,9 +117,10 @@ class data_layer(caffe.Layer):
 
 		#fetch_process = Process(target=self._process_run)
 		#fetch_process.start()
+		self.fetcher_processes = []
 		for i in range(8):
-			fetcher_process = Fetcher(self.queue, self._lines, self.layer_params)
-			fetcher_process.start()
+			self.fetcher_processes.append( Fetcher(self.queue, self._lines, self.layer_params) )
+			self.fetcher_processes[i].start()
 
 
 		def clean_up():
