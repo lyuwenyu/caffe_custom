@@ -18,20 +18,20 @@ from skimage import transform, io
 
 
 
-car_style_rear = [u'Honda思铂睿2009-2010',
-u'Honda思铂睿2013',
-u'Honda思铂睿2015',
-u'Honda雅阁2003-2005',
-u'Honda雅阁2006-2007',
-u'Honda雅阁2008-2013',
-u'Honda雅阁2014-2016',
-u'Honda雅阁1998-2001',
-u'VW帕萨特2000-2005',
-u'VW帕萨特2006-2008',
-u'VW帕萨特2010',
-u'VW帕萨特2011-2016',
-u'VW迈腾2007-2010',
-u'VW迈腾2011-2017']
+car_style_rear = [u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x',
+u'x']
 
 
 img_filename = u''
