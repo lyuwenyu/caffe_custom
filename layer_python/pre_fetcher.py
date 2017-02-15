@@ -113,15 +113,14 @@ class data_layer(caffe.Layer):
 		self._perm = np.random.permutation(np.arange(len(self._lines)))
 
 		print 'queue init'
-		self.queue = Queue(50)
+		self.queue = Queue(20)
 
 		#fetch_process = Process(target=self._process_run)
 		#fetch_process.start()
 		self.fetcher_processes = []
-		for i in range(8):
+		for i in range(12):
 			self.fetcher_processes.append( Fetcher(self.queue, self._lines, self.layer_params) )
 			self.fetcher_processes[i].start()
-
 
 		def clean_up():
 			print 'terminatring process'
@@ -130,7 +129,7 @@ class data_layer(caffe.Layer):
 				iterm.join()
 		import atexit
 		atexit.register(clean_up)
-		
+
 #	def _process_run(self):
 #
 #		while True:
@@ -142,7 +141,7 @@ class data_layer(caffe.Layer):
 
 	def forward(self, bottom, top):
 
-		print 'forward'
+		#print 'forward'
 
 		start = time.time()
 
@@ -158,10 +157,10 @@ class data_layer(caffe.Layer):
 		top[1].reshape(*(label.shape))
 		top[1].data[...] = label
 
-		print data.shape, label.shape
+		#print data.shape, label.shape
 
-		print time.time()-start
-		logging.warning('-----------------{}'.format(time.time()-start))
+		#print time.time()-start
+		#logging.warning('-----------------{}'.format(time.time()-start))
 
 	def reshape(self, bottom, top):
 		pass
@@ -211,6 +210,7 @@ class Fetcher(Process):
 				img = img[hc-112: hc+112, wc-112: wc+112, :]
 
 		if self.mirror and random.random()<0.5 and self.phase:
+
 			img = img[:, ::-1, :]
 
 		img = img[:,:,[2,1,0]]
@@ -233,25 +233,42 @@ class Fetcher(Process):
 
 				try:
 					img = io.imread(path)
-
-					if self.phase==1 and img.shape[0]>750 and img.shape[1]>750 :
-
-						img = transform.rescale(img, 0.3)*255.0
-						img = self._image_preprocess(img)
-						data.append(img)
-						label.append(int(lab))
-
-					if self.phase==0:
-
-						img = transform.resize(img, [224,224])*255.0
-						img = self._image_preprocess(img)
-						data.append(img)
-						label.append(int(lab))
+				
 				except:
 					print 'load xxx',
 					continue
 
-			#self._cur += self.batch_size
+				if self.phase==1 :
+
+					if img.shape[0]>=1000 and img.shape[1]>=1000 :
+						img = transform.rescale(img, 0.23)*255.0  ####
+
+					elif img.shape[0]>=900 and img.shape[1]>=900 :
+						img = transform.rescale(img, 0.25)*255.0  ####
+
+					elif img.shape[0]>=750 and img.shape[1]>=750 :
+						img = transform.rescale(img, 0.3)*255.0  ####
+
+					else :
+						img = transform.resize(img, [256, 256])*255.0
+
+					img = self._image_preprocess(img)
+
+					data.append(img)
+					label.append(int(lab))
+
+				elif self.phase==0 :
+
+					img = transform.resize(img, [224,224])*255.0
+					img = self._image_preprocess(img)
+					data.append(img)
+					label.append(int(lab))
+
+
+
+			self._cur += self.batch_size
+
+			assert len(data) == len(label)
 			
 			return np.array(data), np.array(label)
 
