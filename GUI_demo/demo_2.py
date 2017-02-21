@@ -15,49 +15,13 @@ from skimage import transform, io
 from PIL import Image, ImageDraw, ImageFont
 import logging
 
-car_style_rear = [u'Honda思铂睿2009-2013',
-#u'Honda思铂睿2013',
-u'Honda思铂睿2015',
-u'Honda雅阁2003-2005',
-u'Honda雅阁2006-2007',
-u'Honda雅阁2008-2013',
-u'Honda雅阁2014-2016',
-u'Honda雅阁1998-2001',
-u'VW帕萨特2000-2005',
-u'VW帕萨特2006-2008',
-u'VW帕萨特2010',
-u'VW帕萨特2011-2016',
-u'VW迈腾2007-2010',
-u'VW迈腾2011-2017']
+car_style_rear = []
 
-part_labels = [
-'Dashboard',         
-'Engine',               
-'Lamp_Front',           
-'Lamp_Rear',          
-'Outside_Front',        
-'Outside_Front_Left',  
-'Outside_Rear',   
-'Steering_Center_Panel',
-'Trunk',         
-'Wheel']  
+part_labels = [] 
 
-drive_labels = [u'手动', u'自动']
+drive_labels = []
 
-car_style_front = [u'Honda思铂睿2009-2010',
-u'Honda思铂睿2013',
-u'Honda思铂睿2015',
-u'Honda雅阁2003-2007',
-u'Honda雅阁2008-2010',
-u'Honda雅阁2011-2013',
-u'Honda雅阁2014-2015',
-u'Honda雅阁1998-2001',
-u'VW帕萨特2000-2005',
-u'VW帕萨特2006-2008',
-u'VW帕萨特2010',
-u'VW帕萨特2011-2015',
-u'VW迈腾2007-2010',
-u'VW迈腾2011-2015' ]
+car_style_front = []
 
 #part_deploy = './model/ResNet-152-part-deploy.prototxt'
 #part_model = './model/ResNet-152-part-deploy.caffemodel' 
