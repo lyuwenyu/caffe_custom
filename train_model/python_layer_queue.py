@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.insert(0, 'D:/WenyuLv/caffe-windows/caffe-master/Buildx/x64/Release/pycaffe/')
+sys.path.insert(0, 'c')
 import caffe
 import random
 from skimage import io, transform
