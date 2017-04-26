@@ -14,6 +14,7 @@ from fast_rcnn.config import cfg
 
 import glob
 
+from collections import defaultdict
 
 class kitti(imdb):
 
@@ -130,6 +131,9 @@ class kitti(imdb):
         fram_data = {}
         neg_data = {}
 
+        # fram_data = defaultdict(list)
+        # neg_data = defaultdict(list)
+
         for img_path, gt_path in zip(img_dirs, gt_dirs):
 
             imgs = glob.glob(self._data_path+img_path+'/*.png')
@@ -142,17 +146,25 @@ class kitti(imdb):
                 for ll in gt_raw_data:
                     
                     if ll[2] in ['Car', 'Van']:
-                        try:
-                            fram_data[imgs[int(ll[0])]].append(ll)
-                        except:
-                            fram_data[imgs[int(ll[0])]] = [ll]
+                        # try:
+                        #     fram_data[imgs[int(ll[0])]].append(ll)
+                        # except:
+                        #     fram_data[imgs[int(ll[0])]] = [ll]
+
+                        fram_data.setdefault(int(ll[0]), []).append(ll)
+
+                        # fram_data[ int(ll[0]) ].append(llf)
 
                     elif ll[2] == 'DontCare' :
 
-                        try:
-                            neg_data[imgs[int(ll[0])]].append(ll)
-                        except:
-                            neg_data[imgs[int(ll[0])]] = [ll]
+                        # try:
+                        #     neg_data[imgs[int(ll[0])]].append(ll)
+                        # except:
+                        #     neg_data[imgs[int(ll[0])]] = [ll]
+
+                        fram_data.setdefault(int(ll[0]), []).append(ll)
+
+                        # fram_data[ int(ll[0]) ].append(llf)
 
 
 
