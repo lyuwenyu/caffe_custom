@@ -25,17 +25,17 @@ car_style_front = []
 
 #part_deploy = './model/ResNet-152-part-deploy.prototxt'
 #part_model = './model/ResNet-152-part-deploy.caffemodel' 
-part_deploy = './model/googlenet_part.prototxt'
-part_model = './model/googlenet_part10_queue_iter_1000.caffemodel'
+part_deploy = '.prototxt'
+part_model = '..caffemodel'
 
-drive_deploy = './model/googlenet_drive.prototxt'
-drive_model = './model/googlenet_drive.caffemodel'
+drive_deploy = '.prototxt'
+drive_model = '.caffemodel'
 
-rear_deploy = './model/ResNet-101-rear-deploy.prototxt'
-rear_model = './model/ResNet-101-rear-deploy.caffemodel'
+rear_deploy = '.prototxt'
+rear_model = '.caffemodel'
 
-front_deploy = './model/ResNet-101-front-deploy.prototxt'
-front_model = './model/ResNet-101-front-deploy.caffemodel'
+front_deploy = '.prototxt'
+front_model = '.caffemodel'
 
 
 img_filename = u''
@@ -195,9 +195,9 @@ def run():
 		info_detail = ''
 
 	if info_detail:
-		info = u'车部位: {}, 置信度: {:.4f};\n 详细信息: {}, 置信度: {:.4f}'.format(info_part, part_prob, info_detail, prob)
+		info = u' {},  {:.4f};\n : {},  {:.4f}'.format(info_part, part_prob, info_detail, prob)
 	else:
-		info = u'车部位: {}, 置信度: {:.4f}\n'.format(info_part, part_prob)
+		info = u' {},  {:.4f}\n'.format(info_part, part_prob)
 	
 	logging.warning('\n\n------Processing this image using time: {:.5f}s------\n'.format(time.time()-start))
 
@@ -247,7 +247,7 @@ if __name__ == '__main__':
 	#sys.setdefaultencoding('utf-8') 
 	
 	root = Tk()
-	root.title("Car Label Recognition")  
+	root.title("")  
 	root.geometry("350x150+450+210") #width x height; start coor
 	
 	frame = Frame(root)
