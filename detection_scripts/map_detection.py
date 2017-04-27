@@ -55,10 +55,13 @@ def func(det_filname, gt_filename, ovthresh=0.5):
             if ll[2] in ['Car', 'Van']:
 
                 difficult.append([0])
+                
                 try:
                     fram_data[int(ll[0])].append(ll)
                 except:
                     fram_data[int(ll[0])] = [ll]
+                    
+#                 frame_data.setdefault([int(ll[0])], []).append(ll)
 
 
             # elif ll[2] == 'DontCare' :
